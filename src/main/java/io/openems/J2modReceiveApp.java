@@ -1,3 +1,5 @@
+package io.openems;
+
 import com.ghgande.j2mod.modbus.ModbusException;
 import com.ghgande.j2mod.modbus.procimg.DigitalIn;
 import com.ghgande.j2mod.modbus.procimg.DigitalOut;

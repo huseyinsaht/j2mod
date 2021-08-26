@@ -15,15 +15,19 @@
  */
 package com.ghgande.j2mod.modbus.msg;
 
-import com.ghgande.j2mod.modbus.Modbus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static com.ghgande.j2mod.modbus.msg.ModbusResponse.AuxiliaryMessageTypes.NONE;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-import static com.ghgande.j2mod.modbus.msg.ModbusResponse.AuxiliaryMessageTypes.NONE;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.ghgande.j2mod.modbus.Modbus;
+
+import io.openems.FC40Request;
+import io.openems.FC40Response;
 
 /**
  * Abstract class implementing a <tt>ModbusResponse</tt>. This class provides
@@ -36,127 +40,128 @@ import static com.ghgande.j2mod.modbus.msg.ModbusResponse.AuxiliaryMessageTypes.
  */
 public abstract class ModbusResponse extends ModbusMessageImpl {
 
-    private static final Logger logger = LoggerFactory.getLogger(ModbusResponse.class);
+	private static final Logger logger = LoggerFactory.getLogger(ModbusResponse.class);
 
-    public enum AuxiliaryMessageTypes {
-        NONE, UNIT_ID_MISSMATCH
-    }
-    private AuxiliaryMessageTypes auxiliaryType = NONE;
+	public enum AuxiliaryMessageTypes {
+		NONE, UNIT_ID_MISSMATCH
+	}
 
-    /**
-     * Factory method creating the required specialized <tt>ModbusResponse</tt>
-     * instance.
-     *
-     * @param functionCode the function code of the response as <tt>int</tt>.
-     *
-     * @return a ModbusResponse instance specific for the given function code.
-     */
-    public static ModbusResponse createModbusResponse(int functionCode) {
-        ModbusResponse response;
+	private AuxiliaryMessageTypes auxiliaryType = NONE;
 
-        switch (functionCode) {
-            case Modbus.READ_COILS:
-                response = new ReadCoilsResponse();
-                break;
-            case Modbus.READ_INPUT_DISCRETES:
-                response = new ReadInputDiscretesResponse();
-                break;
-            case Modbus.READ_MULTIPLE_REGISTERS:
-                response = new ReadMultipleRegistersResponse();
-                break;
-            case Modbus.READ_INPUT_REGISTERS:
-                response = new ReadInputRegistersResponse();
-                break;
-            case Modbus.WRITE_COIL:
-                response = new WriteCoilResponse();
-                break;
-            case Modbus.WRITE_SINGLE_REGISTER:
-                response = new WriteSingleRegisterResponse();
-                break;
-            case Modbus.WRITE_MULTIPLE_COILS:
-                response = new WriteMultipleCoilsResponse();
-                break;
-            case Modbus.WRITE_MULTIPLE_REGISTERS:
-                response = new WriteMultipleRegistersResponse();
-                break;
-            case Modbus.READ_EXCEPTION_STATUS:
-                response = new ReadExceptionStatusResponse();
-                break;
-            case Modbus.READ_SERIAL_DIAGNOSTICS:
-                response = new ReadSerialDiagnosticsResponse();
-                break;
-            case Modbus.READ_COMM_EVENT_COUNTER:
-                response = new ReadCommEventCounterResponse();
-                break;
-            case Modbus.READ_COMM_EVENT_LOG:
-                response = new ReadCommEventLogResponse();
-                break;
-            case Modbus.REPORT_SLAVE_ID:
-                response = new ReportSlaveIDResponse();
-                break;
-            case Modbus.READ_FILE_RECORD:
-                response = new ReadFileRecordResponse();
-                break;
-            case Modbus.WRITE_FILE_RECORD:
-                response = new WriteFileRecordResponse();
-                break;
-            case Modbus.MASK_WRITE_REGISTER:
-                response = new MaskWriteRegisterResponse();
-                break;
-            case Modbus.READ_WRITE_MULTIPLE:
-                response = new ReadWriteMultipleResponse();
-                break;
-            case Modbus.READ_FIFO_QUEUE:
-                response = new ReadFIFOQueueResponse();
-                break;
-            case Modbus.READ_MEI:
-                response = new ReadMEIResponse();
-                break;
-            default:
-                if ((functionCode & 0x80) != 0) {
-                    response = new ExceptionResponse(functionCode);
-                }
-                else {
-                    response = new ExceptionResponse();
-                }
-                break;
-        }
-        return response;
-    }
+	/**
+	 * Factory method creating the required specialized <tt>ModbusResponse</tt>
+	 * instance.
+	 *
+	 * @param functionCode the function code of the response as <tt>int</tt>.
+	 *
+	 * @return a ModbusResponse instance specific for the given function code.
+	 */
+	public static ModbusResponse createModbusResponse(int functionCode) {
+		ModbusResponse response;
 
-    /**
-     * Utility method to set the raw data of the message. Should not be used
-     * except under rare circumstances.
-     * <p>
-     *
-     * @param msg the <tt>byte[]</tt> resembling the raw modbus response
-     *            message.
-     */
-    protected void setMessage(byte[] msg) {
-        try {
-            readData(new DataInputStream(new ByteArrayInputStream(msg)));
-        }
-        catch (IOException ex) {
-            logger.error("Problem setting response message - {}", ex.getMessage());
-        }
-    }
+		switch (functionCode) {
+		case Modbus.READ_COILS:
+			response = new ReadCoilsResponse();
+			break;
+		case Modbus.READ_INPUT_DISCRETES:
+			response = new ReadInputDiscretesResponse();
+			break;
+		case Modbus.READ_MULTIPLE_REGISTERS:
+			response = new ReadMultipleRegistersResponse();
+			break;
+		case Modbus.READ_INPUT_REGISTERS:
+			response = new ReadInputRegistersResponse();
+			break;
+		case Modbus.WRITE_COIL:
+			response = new WriteCoilResponse();
+			break;
+		case Modbus.WRITE_SINGLE_REGISTER:
+			response = new WriteSingleRegisterResponse();
+			break;
+		case Modbus.WRITE_MULTIPLE_COILS:
+			response = new WriteMultipleCoilsResponse();
+			break;
+		case Modbus.WRITE_MULTIPLE_REGISTERS:
+			response = new WriteMultipleRegistersResponse();
+			break;
+		case Modbus.READ_EXCEPTION_STATUS:
+			response = new ReadExceptionStatusResponse();
+			break;
+		case Modbus.READ_SERIAL_DIAGNOSTICS:
+			response = new ReadSerialDiagnosticsResponse();
+			break;
+		case Modbus.READ_COMM_EVENT_COUNTER:
+			response = new ReadCommEventCounterResponse();
+			break;
+		case Modbus.READ_COMM_EVENT_LOG:
+			response = new ReadCommEventLogResponse();
+			break;
+		case Modbus.REPORT_SLAVE_ID:
+			response = new ReportSlaveIDResponse();
+			break;
+		case Modbus.READ_FILE_RECORD:
+			response = new ReadFileRecordResponse();
+			break;
+		case Modbus.WRITE_FILE_RECORD:
+			response = new WriteFileRecordResponse();
+			break;
+		case Modbus.MASK_WRITE_REGISTER:
+			response = new MaskWriteRegisterResponse();
+			break;
+		case Modbus.READ_WRITE_MULTIPLE:
+			response = new ReadWriteMultipleResponse();
+			break;
+		case Modbus.READ_FIFO_QUEUE:
+			response = new ReadFIFOQueueResponse();
+			break;
+		case Modbus.READ_MEI:
+			response = new ReadMEIResponse();
+			break;
+		case FC40Request.FUNCTION_CODE:
+			response = new FC40Response();
+			break;
+		default:
+			if ((functionCode & 0x80) != 0) {
+				response = new ExceptionResponse(functionCode);
+			} else {
+				response = new ExceptionResponse();
+			}
+			break;
+		}
+		return response;
+	}
 
-    /**
-     * Returns the auxiliary type of this response message
-     * Useful for adding extra information to the message that can be used by downstream processing
-     *
-     * @return Auxiliary type
-     */
-    public AuxiliaryMessageTypes getAuxiliaryType() {
-        return auxiliaryType;
-    }
+	/**
+	 * Utility method to set the raw data of the message. Should not be used except
+	 * under rare circumstances.
+	 * <p>
+	 *
+	 * @param msg the <tt>byte[]</tt> resembling the raw modbus response message.
+	 */
+	protected void setMessage(byte[] msg) {
+		try {
+			readData(new DataInputStream(new ByteArrayInputStream(msg)));
+		} catch (IOException ex) {
+			logger.error("Problem setting response message - {}", ex.getMessage());
+		}
+	}
 
-    /**
-     * Sets the auxiliary type of this response
-     *
-     * @param auxiliaryType Type
-     */
-    public void setAuxiliaryType(AuxiliaryMessageTypes auxiliaryType) {
-        this.auxiliaryType = auxiliaryType;
-    }
+	/**
+	 * Returns the auxiliary type of this response message Useful for adding extra
+	 * information to the message that can be used by downstream processing
+	 *
+	 * @return Auxiliary type
+	 */
+	public AuxiliaryMessageTypes getAuxiliaryType() {
+		return auxiliaryType;
+	}
+
+	/**
+	 * Sets the auxiliary type of this response
+	 *
+	 * @param auxiliaryType Type
+	 */
+	public void setAuxiliaryType(AuxiliaryMessageTypes auxiliaryType) {
+		this.auxiliaryType = auxiliaryType;
+	}
 }
