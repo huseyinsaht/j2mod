@@ -15,14 +15,19 @@
  */
 package com.ghgande.j2mod.modbus.msg;
 
-import com.ghgande.j2mod.modbus.Modbus;
-import com.ghgande.j2mod.modbus.msg.WriteFileRecordResponse.RecordResponse;
-import com.ghgande.j2mod.modbus.net.AbstractModbusListener;
-import com.ghgande.j2mod.modbus.procimg.*;
-
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+
+import com.ghgande.j2mod.modbus.Modbus;
+import com.ghgande.j2mod.modbus.msg.WriteFileRecordResponse.RecordResponse;
+import com.ghgande.j2mod.modbus.net.AbstractModbusListener;
+import com.ghgande.j2mod.modbus.procimg.File;
+import com.ghgande.j2mod.modbus.procimg.IllegalAddressException;
+import com.ghgande.j2mod.modbus.procimg.ProcessImage;
+import com.ghgande.j2mod.modbus.procimg.Record;
+import com.ghgande.j2mod.modbus.procimg.Register;
+import com.ghgande.j2mod.modbus.procimg.SimpleRegister;
 
 /**
  * Class implementing a <tt>Write File Record</tt> request.
@@ -137,7 +142,7 @@ public class WriteFileRecordRequest extends ModbusRequest {
                     return createExceptionResponse(Modbus.ILLEGAL_ADDRESS_EXCEPTION);
                 }
 
-                Record record = file.getRecord(recordRequest.getRecordNumber());
+				Record record = file.getRecord(recordRequest.getRecordNumber());
                 int registers = recordRequest.getWordCount();
                 if (record == null && registers != 0) {
                     return createExceptionResponse(Modbus.ILLEGAL_ADDRESS_EXCEPTION);

@@ -15,12 +15,19 @@
  */
 package com.ghgande.j2mod.modbus.cmd;
 
-import com.ghgande.j2mod.modbus.Modbus;
-import com.ghgande.j2mod.modbus.procimg.*;
-import com.ghgande.j2mod.modbus.slave.ModbusSlave;
-import com.ghgande.j2mod.modbus.slave.ModbusSlaveFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.ghgande.j2mod.modbus.Modbus;
+import com.ghgande.j2mod.modbus.procimg.File;
+import com.ghgande.j2mod.modbus.procimg.Record;
+import com.ghgande.j2mod.modbus.procimg.SimpleDigitalIn;
+import com.ghgande.j2mod.modbus.procimg.SimpleDigitalOut;
+import com.ghgande.j2mod.modbus.procimg.SimpleInputRegister;
+import com.ghgande.j2mod.modbus.procimg.SimpleProcessImage;
+import com.ghgande.j2mod.modbus.procimg.SimpleRegister;
+import com.ghgande.j2mod.modbus.slave.ModbusSlave;
+import com.ghgande.j2mod.modbus.slave.ModbusSlaveFactory;
 
 /**
  * Class implementing a simple Modbus/TCP slave. A simple process image is
