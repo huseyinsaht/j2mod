@@ -45,26 +45,17 @@ public class J2modSendApp {
 
 			FC41WriteRequest fc41Request = new FC41WriteRequest();
 			fc41Request.setReference(ADDRESS);
-			
-			FC42WriteRequest fc42Request = new FC42WriteRequest();
-			fc42Request.setReference(ADDRESS);
 //			fc41Request.setRegisters(
 //					new Register[] { new SimpleRegister(0x00), new SimpleRegister(0x10), new SimpleRegister(0x50) });
 			byte[] bytess;
 			Register[] reg = new Register[20];
-//			for (byte bytes : allBytes) {
 			for (int i = 0; i < 20; i++) {
 				String register = hex.append(String.format("%02X", allBytes[i])).toString();
-//				bytess = register.getBytes(StandardCharsets.US_ASCII);
 				reg[i] = new SimpleRegister(allBytes[i]);
 				hex.setLength(0);
 			}
-			
-			fc42Request.setRegisters(reg);
-//			for (Register arr : reg) {
-//				System.out.println(arr);
-//			}
-			arrlist.add(fc42Request);
+			fc41Request.setRegisters(reg);
+			arrlist.add(fc41Request);
 
 			for (ModbusRequest req : arrlist) {
 				req.setUnitID(UNIT_ID);
@@ -79,11 +70,6 @@ public class J2modSendApp {
 							+ response.getClass().getSimpleName() + "]");
 				}
 			}
-//			FC40ReadRequest readRequest = new FC40ReadRequest(1, 5);
-//			readRequest.setUnitID(UNIT_ID);
-//			transaction.setRequest(readRequest);
-//			transaction.execute();
-//			ModbusResponse response = transaction.getResponse();
 		} finally {
 			if (tcpConnection != null) {
 				tcpConnection.close();
