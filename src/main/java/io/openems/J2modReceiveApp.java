@@ -22,11 +22,13 @@ public class J2modReceiveApp {
 			slave = ModbusSlaveFactory.createTCPSlave(502, 5);
 			slave.addProcessImage(UNIT_ID, new MyProcessImage());
 			slave.open();
+			
 			System.out.println("Started Modbus/TCP Slave");
 			Thread.sleep(Long.MAX_VALUE);
 		} finally {
 			slave.close();
 		}
+
 	}
 
 	private static class MyRegister implements Register {

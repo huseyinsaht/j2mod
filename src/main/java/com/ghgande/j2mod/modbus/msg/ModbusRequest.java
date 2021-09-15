@@ -18,7 +18,8 @@ package com.ghgande.j2mod.modbus.msg;
 import com.ghgande.j2mod.modbus.Modbus;
 import com.ghgande.j2mod.modbus.net.AbstractModbusListener;
 
-import io.openems.FC40Request;
+import io.openems.FC40WriteRequest;
+import io.openems.FC41WriteRequest;
 
 /**
  * Abstract class implementing a <tt>ModbusRequest</tt>. This class provides
@@ -100,8 +101,11 @@ public abstract class ModbusRequest extends ModbusMessageImpl {
 		case Modbus.READ_MEI:
 			request = new ReadMEIRequest();
 			break;
-		case FC40Request.FUNCTION_CODE:
-			request = new FC40Request();
+		case FC40WriteRequest.FUNCTION_CODE:
+			request = new FC40WriteRequest();
+			break;
+		case FC41WriteRequest.FUNCTION_CODE:
+			request = new FC41WriteRequest();
 			break;
 		default:
 			request = new IllegalFunctionRequest(functionCode);
@@ -161,7 +165,7 @@ public abstract class ModbusRequest extends ModbusMessageImpl {
 	 * @param response Response to update
 	 * @return Updated response
 	 */
-	ModbusResponse updateResponseWithHeader(ModbusResponse response) {
+	protected ModbusResponse updateResponseWithHeader(ModbusResponse response) {
 		return updateResponseWithHeader(response, false);
 	}
 

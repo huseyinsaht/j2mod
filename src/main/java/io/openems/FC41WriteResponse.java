@@ -10,7 +10,7 @@ import com.ghgande.j2mod.modbus.msg.ModbusResponse;
 /**
  * Class implementing FC 40
  */
-public class FC40Response extends ModbusResponse {
+public class FC41WriteResponse extends ModbusResponse {
 	// instance attributes
 	private int wordCount;
 	private int reference;
@@ -18,10 +18,10 @@ public class FC40Response extends ModbusResponse {
 	/**
 	 * Constructs a new <tt>WriteMultipleRegistersResponse</tt> instance.
 	 */
-	public FC40Response() {
+	public FC41WriteResponse() {
 		super();
 
-		setFunctionCode(FC40Request.FUNCTION_CODE);
+		setFunctionCode(FC41WriteRequest.FUNCTION_CODE);
 		setDataLength(4);
 	}
 
@@ -31,10 +31,10 @@ public class FC40Response extends ModbusResponse {
 	 * @param reference the offset to start writing from.
 	 * @param wordCount the number of words (registers) to be written.
 	 */
-	public FC40Response(int reference, int wordCount) {
+	public FC41WriteResponse(int reference, int wordCount) {
 		super();
 
-		setFunctionCode(FC40Request.FUNCTION_CODE);
+		setFunctionCode(FC41WriteRequest.FUNCTION_CODE);
 		setDataLength(4);
 
 		this.reference = reference;
@@ -118,7 +118,7 @@ public class FC40Response extends ModbusResponse {
 	}
 
 	@Override
-	protected void setFunctionCode(int code) {
+	public void setFunctionCode(int code) {
 		super.setFunctionCode(code);
 	}
 }

@@ -26,8 +26,13 @@ import org.slf4j.LoggerFactory;
 
 import com.ghgande.j2mod.modbus.Modbus;
 
-import io.openems.FC40Request;
-import io.openems.FC40Response;
+import io.openems.FC40WriteRequest;
+import io.openems.FC40WriteResponse;
+import io.openems.FC41WriteRequest;
+import io.openems.FC41WriteResponse;
+import io.openems.FC42WriteRequest;
+import io.openems.FC42WriteResponse;
+import io.openems.FC43WriteRequest;
 
 /**
  * Abstract class implementing a <tt>ModbusResponse</tt>. This class provides
@@ -117,9 +122,31 @@ public abstract class ModbusResponse extends ModbusMessageImpl {
 		case Modbus.READ_MEI:
 			response = new ReadMEIResponse();
 			break;
-		case FC40Request.FUNCTION_CODE:
-			response = new FC40Response();
+//		case FC40ReadRequest.FUNCTION_CODE:
+//			response = new FC40ReadResponse();
+//			break;
+		case FC40WriteRequest.FUNCTION_CODE:
+			response = new FC40WriteResponse();
 			break;
+//		case FC41ReadRequest.FUNCTION_CODE:
+//			response = new FC41ReadResponse();
+//			break;
+		case FC41WriteRequest.FUNCTION_CODE:
+			response = new FC41WriteResponse();
+			break;
+//		case FC42ReadRequest.FUNCTION_CODE:
+//			response = new FC42ReadResponse();
+//			break;
+		case FC42WriteRequest.FUNCTION_CODE:
+			response = new FC42WriteResponse();
+			break;
+//		case FC43ReadRequest.FUNCTION_CODE:
+//			response = new FC42ReadResponse();
+//			break;
+		case FC43WriteRequest.FUNCTION_CODE:
+			response = new FC40WriteResponse();
+			break;
+
 		default:
 			if ((functionCode & 0x80) != 0) {
 				response = new ExceptionResponse(functionCode);

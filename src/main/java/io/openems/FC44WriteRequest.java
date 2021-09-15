@@ -18,9 +18,9 @@ import com.ghgande.j2mod.modbus.procimg.SimpleRegister;
 /**
  * Class implementing FC 40
  */
-public class FC40Request extends ModbusRequest {
+public class FC44WriteRequest extends ModbusRequest {
 
-	public final static int FUNCTION_CODE = 0x40;
+	public final static int FUNCTION_CODE = 0x44;
 
 	private int reference;
 	private Register[] registers;
@@ -34,7 +34,7 @@ public class FC40Request extends ModbusRequest {
 	 * @param first     -- the address of the first register to write to.
 	 * @param registers -- the registers to be written.
 	 */
-	public FC40Request(int first, Register[] registers) {
+	public FC44WriteRequest(int first, Register[] registers) {
 		setFunctionCode(FUNCTION_CODE);
 
 		setReference(first);
@@ -45,14 +45,14 @@ public class FC40Request extends ModbusRequest {
 	/**
 	 * Constructs a new <tt>WriteMultipleRegistersRequest</tt> instance.
 	 */
-	public FC40Request() {
+	public FC44WriteRequest() {
 		setFunctionCode(FUNCTION_CODE);
-		setDataLength(5);
+//		setDataLength(5);
 	}
 
 	@Override
 	public ModbusResponse getResponse() {
-		return updateResponseWithHeader(new FC40Response());
+		return updateResponseWithHeader(new FC40WriteResponse());
 	}
 
 	/**
@@ -75,7 +75,7 @@ public class FC40Request extends ModbusRequest {
 	 */
 	@Override
 	public ModbusResponse createResponse(AbstractModbusListener listener) {
-		FC40Response response;
+		FC44WriteResponse response;
 
 		if (nonWordDataHandler == null) {
 			Register[] regs;
@@ -91,7 +91,7 @@ public class FC40Request extends ModbusRequest {
 			} catch (IllegalAddressException iaex) {
 				return createExceptionResponse(Modbus.ILLEGAL_ADDRESS_EXCEPTION);
 			}
-			response = (FC40Response) getResponse();
+			response = (FC44WriteResponse) getResponse();
 			response.setReference(getReference());
 			response.setWordCount(getWordCount());
 		} else {
@@ -100,7 +100,7 @@ public class FC40Request extends ModbusRequest {
 				return createExceptionResponse(result);
 			}
 
-			response = (FC40Response) getResponse();
+			response = (FC44WriteResponse) getResponse();
 			response.setReference(getReference());
 			response.setWordCount(nonWordDataHandler.getWordCount());
 		}
@@ -314,7 +314,7 @@ public class FC40Request extends ModbusRequest {
 	 * @param ignoreFunctionCode True if the function code should stay unmolested
 	 * @return Updated response
 	 */
-	ModbusResponse updateResponseWithHeader(FC40Response response) {
+	ModbusResponse updateResponseWithHeader(FC40WriteResponse response) {
 
 		// transfer header data
 		response.setHeadless(isHeadless());
@@ -330,4 +330,5 @@ public class FC40Request extends ModbusRequest {
 //		}
 		return response;
 	}
+
 }

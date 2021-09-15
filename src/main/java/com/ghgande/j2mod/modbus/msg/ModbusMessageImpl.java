@@ -146,7 +146,7 @@ public abstract class ModbusMessageImpl implements ModbusMessage {
      *
      * @see com.ghgande.j2mod.modbus.Modbus
      */
-    protected void setFunctionCode(int code) {
+    public void setFunctionCode(int code) {
         functionCode = code;
     }
 
