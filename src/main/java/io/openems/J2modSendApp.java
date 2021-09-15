@@ -43,19 +43,16 @@ public class J2modSendApp {
 //			fc40Request.setReference(ADDRESS);
 //			arrlist.add(fc40Request);
 
-			FC41WriteRequest fc41Request = new FC41WriteRequest();
-			fc41Request.setReference(ADDRESS);
-//			fc41Request.setRegisters(
-//					new Register[] { new SimpleRegister(0x00), new SimpleRegister(0x10), new SimpleRegister(0x50) });
-			byte[] bytess;
+			FC42WriteRequest fc42Request = new FC42WriteRequest();
+			fc42Request.setReference(ADDRESS);
 			Register[] reg = new Register[20];
 			for (int i = 0; i < 20; i++) {
-				String register = hex.append(String.format("%02X", allBytes[i])).toString();
+//				String register = hex.append(String.format("%02X", allBytes[i])).toString();
 				reg[i] = new SimpleRegister(allBytes[i]);
 				hex.setLength(0);
 			}
-			fc41Request.setRegisters(reg);
-			arrlist.add(fc41Request);
+			fc42Request.setRegisters(reg);
+			arrlist.add(fc42Request);
 
 			for (ModbusRequest req : arrlist) {
 				req.setUnitID(UNIT_ID);
@@ -64,8 +61,7 @@ public class J2modSendApp {
 				transaction.execute();
 				ModbusResponse response = transaction.getResponse();
 				if (!(response instanceof FC40WriteResponse) && !(response instanceof FC41WriteResponse)
-						&& !(response instanceof FC42WriteResponse) && !(response instanceof FC43WriteResponse)
-						&& !(response instanceof FC41WriteResponse)) {
+						&& !(response instanceof FC42WriteResponse) && !(response instanceof FC43WriteResponse)) {
 					throw new Exception("Unexpected Modbus response. Expected [WriteMultipleRegistersResponse], got ["
 							+ response.getClass().getSimpleName() + "]");
 				}
